@@ -1,9 +1,15 @@
 package com.example.tiptime
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.tiptime.databinding.ActivityMainBinding
 import java.text.NumberFormat
+import kotlin.math.ceil
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         var tip = tipPercentage * cost
         if (binding.roundUpSwitch.isChecked) {
-            tip = kotlin.math.ceil(tip)
+            tip = ceil(tip)
         }
 
         val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
@@ -44,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         val roundUp = binding.roundUpSwitch.isChecked
         if (roundUp) {
-            tip = kotlin.math.ceil(tip)
+            tip = ceil(tip)
         }
 
         // Display the formatted tip value on screen
@@ -56,9 +62,24 @@ class MainActivity : AppCompatActivity() {
         binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
     }
 
+    //Hide keyboard
     private fun clearTip(){
         displayTip(0.0)
         binding.costOfService.setText("")
+        hideKeyboard()
     }
 
+    //Hide keyboard
+    fun Fragment.hideKeyboard() {
+        view?.let { activity?.hideKeyboard(it) }
+    }
+
+    fun Activity.hideKeyboard() {
+        hideKeyboard(currentFocus ?: View(this))
+    }
+
+    fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 }
