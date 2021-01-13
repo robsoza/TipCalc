@@ -26,7 +26,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun calculateTip() {
-        val stringInTextField = binding.costOfService.text.toString()
+        // Get the decimal value from the cost of service text field
+        val stringInTextField = binding.costOfServiceEditText.text.toString()
         val cost = stringInTextField.toDoubleOrNull()
         // If the cost is null or 0, then display 0 tip and exit this function early.
         if (cost == null || cost == 0.0) {
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
     //Hide keyboard
     private fun clearTip(){
         displayTip(0.0)
-        binding.costOfService.setText("")
+        binding.costOfServiceEditText.setText("")
         hideKeyboard()
     }
 
